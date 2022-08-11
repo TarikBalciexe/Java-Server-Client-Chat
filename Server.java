@@ -47,17 +47,6 @@ public class Server {
         }
     } 
      
-        //mesaj gönderen method
-     public void mesajiGonder() throws IOException {
-        
-        output.writeUTF(mesaj);
-        output.flush();
-     }
-      public String mesajiAl() throws IOException {
-        mesaj = input.readUTF();
-        return mesaj;
-      }
-        
         
     public static void main(String[] args) throws IOException {
     try 
