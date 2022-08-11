@@ -84,7 +84,7 @@ public class Client {
     Scanner scanner = new Scanner(System.in);
     System.out.println("Kullanıcı Adı Girin : ");
     String kullaniciAdi = scanner.nextLine();
-    Socket socket = new Socket("localhost", 1234);
+    Socket socket = new Socket("localhost", 3000);
     Client client = new Client(socket, kullaniciAdi);
     client.mesajidinle();
     client.mesajgonder();
