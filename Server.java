@@ -1,26 +1,30 @@
 
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 /**
  *
  * @author Tarık BALCI
  */
 public class Server {
-
+    
+    String mesaj;
+    private DataInputStream input;
+    private DataOutputStream output;
     private ServerSocket serverSocket;
     
     public Server(ServerSocket serverSocket) {
     this.serverSocket = serverSocket;
 }
-    
+    //methodlar
+    //sunucu başlatan method
     public void sunucuyuBaslat() {
         try {
             
             while (!serverSocket.isClosed()) {
-                
+               
                 Socket socket = serverSocket.accept();
                 System.out.println("Yeni katılımcı bağlandı");
                 ClientHandler clientHandler = new ClientHandler(socket);
@@ -32,7 +36,7 @@ public class Server {
         catch (IOException e) {
         }
 
-            }
+            }//bağlantıyı kapatan method
     public void baglantiyiKapat() {
         try {
             if (serverSocket !=null) {
@@ -41,10 +45,33 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    } 
+     
+        //mesaj gönderen method
+     public void mesajiGonder() throws IOException {
+        
+        output.writeUTF(mesaj);
+        output.flush();
+     }
+      public String mesajiAl() throws IOException {
+        mesaj = input.readUTF();
+        return mesaj;
+      }
+        
+        
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(3000);
+    try 
+    { ServerSocket serverSocket = new ServerSocket(3000);
         Server server = new Server(serverSocket);
         server.sunucuyuBaslat();
+        
+      
+    }
+    catch (IOException e) {
+         
+         System.out.println("Connection Refused Exception: " + e);
+         
+   
+        }
     }
 }
