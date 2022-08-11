@@ -1,8 +1,8 @@
 
-import javax.imageio.IIOException;
 import java.io.*;
-import java.net.Socket;
-import java.util.Scanner;
+import java.net.*;
+import java.util.*;
+
 /**
  *
  * @author Tarık BALCI
@@ -12,7 +12,9 @@ public class Client {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String kullaniciAdi;
-    
+      
+
+   
     public Client(Socket socket, String kullaniciAdi) {
     try {
     this.socket = socket;
@@ -25,21 +27,25 @@ public class Client {
     }
     }
     public void mesajgonder() {
+        
     try {
     bufferedWriter.write(kullaniciAdi);
     bufferedWriter.newLine();
     bufferedWriter.flush();
      Scanner scanner = new Scanner(System.in);
      while (socket.isConnected()) {
-     String gidenmesaj = scanner.nextLine();
-     bufferedWriter.write(kullaniciAdi + ": " + gidenmesaj);
+     String gidenMesaj = scanner.nextLine();
+     bufferedWriter.write(kullaniciAdi + ": " + gidenMesaj);
      bufferedWriter.newLine();
      bufferedWriter.flush();
+      
      }
+     
     } catch (IOException e) {
     kapa(socket, bufferedReader, bufferedWriter);
     } 
     }
+    
     private void mesajidinle() {
     new Thread(new Runnable() {
         @Override
@@ -79,15 +85,33 @@ public class Client {
         e.printStackTrace();
 }
     }
-
+        
+         
+    
+    
     public static void main(String[] args) throws IOException {
+        InputStreamReader is = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(is);
+        
+       try {
     Scanner scanner = new Scanner(System.in);
     System.out.println("Kullanıcı Adı Girin : ");
     String kullaniciAdi = scanner.nextLine();
     Socket socket = new Socket("localhost", 3000);
     Client client = new Client(socket, kullaniciAdi);
-    client.mesajidinle();
-    client.mesajgonder();
+   
+             client.mesajidinle();
+             client.mesajgonder();
+        
+                 }
+                 catch (IOException e) {
+         
+         System.out.println("Connection Refused Exception: " + e);
+         
+    
+       
 }
     }
+}
+
 
